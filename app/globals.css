@@ -2,16 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@theme {
-    --font-display: "DM Sans", serif;
-}
-
 :root {
-    body {
-        font-family: var(--font-dm-sans);
-    }
-
-    --main: #88aaee;
+    --main: #ffdc58;
     --overlay: rgba(
         0,
         0,
@@ -19,7 +11,7 @@
         0.8
     ); /* background color overlay for alert dialogs, modals, etc. */
 
-    --bg: #dfe5f2;
+    --bg: #fef2e8;
     --bw: #fff; /* white and secondary black e.g. utility class variant would be: bg-[#fff] dark:bg-[#212121] */
     --blank: #000; /* blank black and white */
     --border: #000;
@@ -28,7 +20,7 @@
     --ring: #000;
     --ring-offset: #fff;
 
-    --border-radius: 5px;
+    --border-radius: 8px;
     --box-shadow-x: 4px;
     --box-shadow-y: 4px;
     --reverse-box-shadow-x: -4px;
@@ -40,7 +32,7 @@
 }
 
 .dark {
-    --bg: #272933;
+    --bg: #374151;
     --bw: #212121;
     --blank: #fff;
     --border: #000;

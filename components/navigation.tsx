@@ -11,7 +11,7 @@ import {
 
 export const Navigation = () => {
   return (
-    <nav className="fixed left-0 top-0 z-20 mx-auto flex h-[88px] w-full items-center border-b-4 border-border bg-bg px-5 m500:h-16 ">
+    <nav className="fixed left-0 top-0 z-20 mx-auto flex h-[88px] w-full items-center border-b-4 border-border bg-white dark:bg-secondaryBlack px-5 m500:h-16 ">
       <div className="mx-auto w-full flex text-text max-w-7xl items-center justify-between">
         <div className="flex items-center gap-10 text-xl">
           <Link className="hover:underline underline-offset-4" href="/">

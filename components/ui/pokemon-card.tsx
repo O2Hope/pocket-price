@@ -31,7 +31,9 @@ export default function PokemonCard({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <div className="font-heading">{caption}</div>
+              <div className="font-heading whitespace-nowrap overflow-hidden text-ellipsis">
+                {caption}
+              </div>
             </TooltipTrigger>
             <TooltipContent>{caption}</TooltipContent>
           </Tooltip>
