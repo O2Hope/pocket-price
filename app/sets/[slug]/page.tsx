@@ -1,4 +1,4 @@
-import { Card, CardsCollection } from "@/components/cards-collection";
+import { CardsCollection } from "@/components/cards-collection";
 import { getCardsBySet } from "@/lib/api/cards/getCardsBySet";
 import { getSet } from "@/lib/api/sets/getSet";
 import Image from "next/image";
