@@ -11,21 +11,16 @@ type Props = {
   caption: string;
   price: number;
   number: string;
-  onClick: () => void;
 };
 
 export default function PokemonCard({
   imageUrl,
   caption,
-  onClick,
   price,
   number,
 }: Props) {
   return (
-    <figure
-      onClick={onClick}
-      className="flex flex-col hover:cursor-pointer hover:scale-105 transition-all overflow-hidden rounded-base border-2 border-border bg-main font-base shadow-shadow"
-    >
+    <figure className="flex flex-col hover:cursor-pointer hover:scale-105 transition-all overflow-hidden rounded-base border-2 border-border bg-main font-base shadow-shadow">
       <img src={imageUrl} alt="image" className="w-full aspect-auto" />
       <figcaption className="border-t-2 text-mtext border-border p-4 flex flex-col justify-between flex-1">
         <TooltipProvider>

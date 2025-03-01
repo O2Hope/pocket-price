@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={`${dmSans.variable} antialiased bg-bg`}>
         <Navigation />
         <main className="w-full mx-auto px-4 max-w-4xl pt-28 min-h-[100dvh] flex flex-col ">
-          {children}\
+          {children}
         </main>
       </body>
     </html>

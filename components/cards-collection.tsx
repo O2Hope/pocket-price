@@ -3,6 +3,8 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Input } from "./ui/input";
 import PokemonCard from "./ui/pokemon-card";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type Card = {
   id: string;
@@ -24,6 +26,7 @@ type Card = {
 };
 
 export const CardsCollection = ({ cards }: { cards: Card[] }) => {
+  const pathname = usePathname();
   return (
     <div className="flex flex-col gap-4 my-8">
       <Input placeholder="Search Card" className="max-w-lg" />
@@ -54,18 +57,17 @@ export const CardsCollection = ({ cards }: { cards: Card[] }) => {
               }}
               custom={index}
             >
-              <PokemonCard
-                imageUrl={card.images.small}
-                caption={card.name}
-                number={card.number}
-                price={
-                  card.tcgplayer.prices?.holofoil?.market ||
-                  card.tcgplayer.prices?.reverseHolofoil?.market
-                }
-                onClick={() => {
-                  console.log("Card clicked");
-                }}
-              />
+              <Link href={`${pathname}/${card.id}`}>
+                <PokemonCard
+                  imageUrl={card.images.small}
+                  caption={card.name}
+                  number={card.number}
+                  price={
+                    card.tcgplayer.prices?.holofoil?.market ||
+                    card.tcgplayer.prices?.reverseHolofoil?.market
+                  }
+                />
+              </Link>
             </motion.li>
           ))}
         </AnimatePresence>
