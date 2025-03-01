@@ -1,14 +1,5 @@
-import { CardsCollection } from "@/components/cards-collection";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationLink,
-  PaginationEllipsis,
-  PaginationNext,
-} from "@/components/ui/pagination";
-import { getCardsBySet } from "@/lib/api/cards/getCards";
+import { Card, CardsCollection } from "@/components/cards-collection";
+import { getCardsBySet } from "@/lib/api/cards/getCardsBySet";
 import { getSet } from "@/lib/api/sets/getSet";
 import Image from "next/image";
 
@@ -36,39 +27,6 @@ export default async function Set({
     totalCount,
   } = await getCardsBySet(set.id, query.page, query.pageSize);
 
-  const renderPageNumbers = () => {
-    const pages = [];
-    const totalPages = Math.ceil(totalCount / pageSize);
-    const showDots = totalPages > 6;
-
-    for (let i = 1; i <= totalPages; i++) {
-      if (
-        i === 1 || // First page
-        i === totalPages || // Last page
-        (i >= page - 1 && i <= page + 1) // Current, prev, next
-      ) {
-        pages.push(
-          <PaginationItem key={i}>
-            <PaginationLink
-              isActive={i === page}
-              href={`?page=${i}&pageSize=${pageSize}`}
-            >
-              {i}
-            </PaginationLink>
-          </PaginationItem>,
-        );
-      } else if (showDots && (i === page - 2 || i === page + 2)) {
-        pages.push(
-          <PaginationItem key={i}>
-            <PaginationEllipsis />
-          </PaginationItem>,
-        );
-      }
-    }
-
-    return pages;
-  };
-
   return (
     <div className="pb-8">
       <div className="flex gap-4 text-text">
@@ -87,24 +45,12 @@ export default async function Set({
           <p>{set.releaseDate}</p>
         </div>
       </div>
-      <CardsCollection cards={cards} />
-      <Pagination>
-        <PaginationContent>
-          {page !== 1 && (
-            <PaginationItem>
-              <PaginationPrevious
-                href={`?page=${page - 1}&pageSize=${pageSize}`}
-              />
-            </PaginationItem>
-          )}
-          {renderPageNumbers()}
-          {page * pageSize < totalCount && (
-            <PaginationItem>
-              <PaginationNext href={`?page=${page + 1}&pageSize=${pageSize}`} />
-            </PaginationItem>
-          )}
-        </PaginationContent>
-      </Pagination>
+      <CardsCollection
+        cards={cards}
+        page={page}
+        pageSize={pageSize}
+        totalCount={totalCount}
+      />
     </div>
   );
 }

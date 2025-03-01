@@ -26,7 +26,6 @@ export default function PokemonCard({
         <Image
           src={imageUrl}
           alt={caption}
-          layout="intrinsic"
           width={200}
           height={280}
           className="w-full h-auto"
