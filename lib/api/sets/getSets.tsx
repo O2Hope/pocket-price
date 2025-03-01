@@ -1,6 +1,6 @@
 export const getSetsBySeries = async () => {
   const sets = await fetch(
-    `${process.env.TCG_API}/sets?select=id,name,images,series`,
+    `${process.env.TCG_API}/sets?select=id,name,images,series,releaseDate&orderBy=-releaseDate`,
     {
       headers: { "X-Api-Key": process.env.TCG_KEY as string },
       cache: "force-cache",

@@ -47,25 +47,21 @@ export const SetsCollection = ({ series }: { series: Series }) => {
         placeholder="Search set"
         className="max-w-lg mb-4"
       />
-      {Object.keys(localSeries)
-        .reverse()
-        .map((serie: string) => (
-          <div className="mb-4" key={`serie-${serie}`}>
-            <div className="text-2xl font-heading text-text">{serie}</div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 my-2">
-              {localSeries[serie]
-                .map((set: Set) => (
-                  <SetCard
-                    onClick={() => router.push(`/sets/${set.id}`)}
-                    key={`set-${set.id}`}
-                    imageUrl={set.images.logo}
-                    caption={set.name}
-                  />
-                ))
-                .reverse()}
-            </div>
+      {Object.keys(localSeries).map((serie: string) => (
+        <div className="mb-4" key={`serie-${serie}`}>
+          <div className="text-2xl font-heading text-text">{serie}</div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 my-2">
+            {localSeries[serie].map((set: Set) => (
+              <SetCard
+                onClick={() => router.push(`/sets/${set.id}`)}
+                key={`set-${set.id}`}
+                imageUrl={set.images.logo}
+                caption={set.name}
+              />
+            ))}
           </div>
-        ))}
+        </div>
+      ))}
     </div>
   );
 };
