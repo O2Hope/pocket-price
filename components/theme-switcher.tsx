@@ -11,7 +11,7 @@ import {
 } from "./ui/tooltip";
 
 export const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
     const root = window.document.documentElement;

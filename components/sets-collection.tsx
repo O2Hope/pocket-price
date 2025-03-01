@@ -2,8 +2,8 @@
 
 import { Input } from "@/components/ui/input";
 import SetCard from "@/components/ui/set-card";
+import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 type Set = {
   id: string;
@@ -19,7 +19,6 @@ type Series = {
 
 export const SetsCollection = ({ series }: { series: Series }) => {
   const [localSeries, setLocalSeries] = useState<Series>(series);
-  const router = useRouter();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e.target.value;
@@ -52,12 +51,17 @@ export const SetsCollection = ({ series }: { series: Series }) => {
           <div className="text-2xl font-heading text-text">{serie}</div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 my-2">
             {localSeries[serie].map((set: Set) => (
-              <SetCard
-                onClick={() => router.push(`/sets/${set.id}`)}
+              <Link
+                className="contents"
                 key={`set-${set.id}`}
-                imageUrl={set.images.logo}
-                caption={set.name}
-              />
+                href={`/sets/${set.id}`}
+              >
+                <SetCard
+                  key={`set-${set.id}`}
+                  imageUrl={set.images.logo}
+                  caption={set.name}
+                />
+              </Link>
             ))}
           </div>
         </div>

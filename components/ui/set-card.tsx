@@ -1,16 +1,22 @@
+import Image from "next/image";
+
 type Props = {
   imageUrl: string;
   caption: string;
-  onClick: () => void;
 };
 
-export default function ImageCard({ imageUrl, caption, onClick }: Props) {
+export default function ImageCard({ imageUrl, caption }: Props) {
   return (
-    <figure
-      onClick={onClick}
-      className="hover:cursor-pointer hover:scale-105 transition-all overflow-hidden rounded-base border-2 border-border bg-main font-base shadow-shadow"
-    >
-      <img className="w-full aspect-[4/3] p-8" src={imageUrl} alt="image" />
+    <figure className="hover:cursor-pointer hover:scale-105 transition-all overflow-hidden rounded-base border-2 border-border bg-main font-base shadow-shadow">
+      <div className="relative w-full aspect-[4/3]">
+        <Image
+          src={imageUrl}
+          alt={caption}
+          layout="fill"
+          objectFit="contain"
+          className="p-8"
+        />
+      </div>
       <figcaption className="border-t-2 text-mtext border-border p-4">
         {caption}
       </figcaption>

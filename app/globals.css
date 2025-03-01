@@ -29,6 +29,7 @@
     --heading-font-weight: 700;
 
     --shadow: var(--box-shadow-x) var(--box-shadow-y) 0px 0px var(--border);
+    --progress: #374151;
 }
 
 .dark {
@@ -42,6 +43,7 @@
     --ring-offset: #000;
 
     --shadow: var(--box-shadow-x) var(--box-shadow-y) 0px 0px var(--border);
+    --progress: #ffdc58;
 }
 
 @layer base {

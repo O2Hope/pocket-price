@@ -5,6 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip";
+import Image from "next/image";
 
 type Props = {
   imageUrl: string;
@@ -21,7 +22,16 @@ export default function PokemonCard({
 }: Props) {
   return (
     <figure className="flex flex-col hover:cursor-pointer hover:scale-105 transition-all overflow-hidden rounded-base border-2 border-border bg-main font-base shadow-shadow">
-      <img src={imageUrl} alt="image" className="w-full aspect-auto" />
+      <div className="relative w-full">
+        <Image
+          src={imageUrl}
+          alt={caption}
+          layout="intrinsic"
+          width={200}
+          height={280}
+          className="w-full h-auto"
+        />
+      </div>
       <figcaption className="border-t-2 text-mtext border-border p-4 flex flex-col justify-between flex-1">
         <TooltipProvider>
           <Tooltip>
