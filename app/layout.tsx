@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/navigation";
 import NextTopLoader from "nextjs-toploader";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({
         <main className="w-full mx-auto px-4 max-w-4xl pt-28 min-h-[100dvh] flex flex-col ">
           {children}
         </main>
+        <SpeedInsights />
       </body>
     </html>
   );
