@@ -6,7 +6,7 @@ import PokemonCard from "./ui/pokemon-card";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDebounce } from "@/lib/hooks/debounce";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getCardByNameAndSet } from "@/lib/api/cards/getCardsByNameAndSet";
 import {
   Pagination,
@@ -61,14 +61,18 @@ export const CardsCollection = ({
     page,
   });
   const debouncedSearch = useDebounce(search, 300);
+  const latestRequest = useRef(0);
 
   useEffect(() => {
     async function fetchCards() {
+      const currentRequestId = latestRequest.current + 1;
+      latestRequest.current = currentRequestId;
       if (debouncedSearch) {
         const { data, ...pagination } = await getCardByNameAndSet(
           debouncedSearch,
           set,
         );
+        if (currentRequestId !== latestRequest.current) return;
         return setFilteredCards({ cards: data, ...pagination });
       }
       return setFilteredCards({ cards, totalCount, pageSize, page });
@@ -160,26 +164,28 @@ export const CardsCollection = ({
           ))}
         </AnimatePresence>
       </ul>
-      <Pagination>
-        <PaginationContent>
-          {page !== 1 && (
-            <PaginationItem>
-              <PaginationPrevious
-                href={`?page=${page - 1}&pageSize=${pageSize}`}
-              />
-            </PaginationItem>
-          )}
-          {renderPageNumbers()}
-          {filteredCards.page * filteredCards.pageSize <
-            filteredCards.totalCount && (
-            <PaginationItem>
-              <PaginationNext
-                href={`?page=${filteredCards.page + 1}&pageSize=${filteredCards.pageSize}`}
-              />
-            </PaginationItem>
-          )}
-        </PaginationContent>
-      </Pagination>
+      {!debouncedSearch && (
+        <Pagination>
+          <PaginationContent>
+            {page !== 1 && (
+              <PaginationItem>
+                <PaginationPrevious
+                  href={`?page=${page - 1}&pageSize=${pageSize}`}
+                />
+              </PaginationItem>
+            )}
+            {renderPageNumbers()}
+            {filteredCards.page * filteredCards.pageSize <
+              filteredCards.totalCount && (
+              <PaginationItem>
+                <PaginationNext
+                  href={`?page=${filteredCards.page + 1}&pageSize=${filteredCards.pageSize}`}
+                />
+              </PaginationItem>
+            )}
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };
