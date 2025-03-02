@@ -5,18 +5,18 @@ import { Input } from "./ui/input";
 import PokemonCard from "./ui/pokemon-card";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useDebounce } from "@/lib/hooks/debounce";
-import { useState, useEffect, useRef } from "react";
-import { getCardByNameAndSet } from "@/lib/api/cards/getCardsByNameAndSet";
+import { useQueryState } from "nuqs";
+import { debounce } from "@/lib/hooks/debounce";
+import { useEffect, useRef } from "react";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationEllipsis,
-  PaginationLink,
-} from "./ui/pagination";
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export type Card = {
   id: string;
@@ -39,92 +39,59 @@ export type Card = {
 
 export type CardsCollectionProps = {
   cards: Card[];
-  totalCount: number;
-  pageSize: number;
-  page: number;
 };
 
-export const CardsCollection = ({
-  cards,
-  totalCount,
-  pageSize,
-  page,
-}: CardsCollectionProps) => {
+export const CardsCollection = ({ cards }: CardsCollectionProps) => {
   const pathname = usePathname();
-  const segments = pathname.split("/");
-  const set = segments[segments.length - 1];
-  const [search, setSearch] = useState("");
-  const [filteredCards, setFilteredCards] = useState<CardsCollectionProps>({
-    cards,
-    totalCount,
-    pageSize,
-    page,
-  });
-  const debouncedSearch = useDebounce(search, 300);
-  const latestRequest = useRef(0);
+  const [name, setName] = useQueryState("name");
+  const [order, setOrder] = useQueryState("order");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    async function fetchCards() {
-      const currentRequestId = latestRequest.current + 1;
-      latestRequest.current = currentRequestId;
-      if (debouncedSearch) {
-        const { data, ...pagination } = await getCardByNameAndSet(
-          debouncedSearch,
-          set,
-        );
-        if (currentRequestId !== latestRequest.current) return;
-        return setFilteredCards({ cards: data, ...pagination });
-      }
-      return setFilteredCards({ cards, totalCount, pageSize, page });
-    }
-    fetchCards();
-  }, [cards, debouncedSearch, page, pageSize, set, totalCount]);
+    if (inputRef.current && name) inputRef.current.value = name;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const renderPageNumbers = () => {
-    const pages = [];
-    const totalPages = Math.ceil(
-      filteredCards.totalCount / filteredCards.pageSize,
-    );
-    const showDots = totalPages > 6;
-
-    for (let i = 1; i <= totalPages; i++) {
-      if (
-        i === 1 || // First page
-        i === totalPages || // Last page
-        (i >= page - 1 && i <= page + 1) // Current, prev, next
-      ) {
-        pages.push(
-          <PaginationItem key={i}>
-            <PaginationLink
-              isActive={i === page}
-              href={`?page=${i}&pageSize=${pageSize}`}
-            >
-              {i}
-            </PaginationLink>
-          </PaginationItem>,
-        );
-      } else if (showDots && (i === page - 2 || i === page + 2)) {
-        pages.push(
-          <PaginationItem key={i}>
-            <PaginationEllipsis />
-          </PaginationItem>,
-        );
-      }
-    }
-
-    return pages;
-  };
+  const handleSearch = debounce((value: string) => {
+    setName(value, { shallow: false });
+  }, 300);
 
   return (
     <div className="flex flex-col gap-4 my-8">
-      <Input
-        placeholder="Search Card"
-        onChange={(e) => setSearch(e.target.value)}
-        className="max-w-lg"
-      />
+      <div className="flex gap-8 justify-between">
+        <Input
+          ref={inputRef}
+          placeholder="Search Card"
+          onChange={(e) => handleSearch(e.target.value)}
+          className="max-w-lg"
+        />
+        <Select
+          value={order || "-tcgplayer.prices.holofoil.market"}
+          onValueChange={(e) => setOrder(e, { shallow: false })}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Order by</SelectLabel>
+              <SelectItem value="tcgplayer.prices.holofoil.market">
+                Price: Low to High
+              </SelectItem>
+              <SelectItem value="-tcgplayer.prices.holofoil.market">
+                Price: High to Lo
+              </SelectItem>
+              <SelectItem value="name">Name: A to Z</SelectItem>
+              <SelectItem value="-name">Name: Z to A</SelectItem>
+              <SelectItem value="number">Number Asc</SelectItem>
+              <SelectItem value="-number">Number Desc</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
       <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
         <AnimatePresence custom="exit">
-          {filteredCards.cards.map((card, index) => (
+          {cards.map((card, index) => (
             <motion.li
               key={`${card.id}-${index}`}
               initial="hidden"
@@ -164,28 +131,6 @@ export const CardsCollection = ({
           ))}
         </AnimatePresence>
       </ul>
-      {!debouncedSearch && (
-        <Pagination>
-          <PaginationContent>
-            {page !== 1 && (
-              <PaginationItem>
-                <PaginationPrevious
-                  href={`?page=${page - 1}&pageSize=${pageSize}`}
-                />
-              </PaginationItem>
-            )}
-            {renderPageNumbers()}
-            {filteredCards.page * filteredCards.pageSize <
-              filteredCards.totalCount && (
-              <PaginationItem>
-                <PaginationNext
-                  href={`?page=${filteredCards.page + 1}&pageSize=${filteredCards.pageSize}`}
-                />
-              </PaginationItem>
-            )}
-          </PaginationContent>
-        </Pagination>
-      )}
     </div>
   );
 };

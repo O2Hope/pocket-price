@@ -54,7 +54,7 @@ export const SetsCollection = ({ series }: { series: Series }) => {
               <Link
                 className="contents"
                 key={`set-${set.id}`}
-                href={`/sets/${set.id}`}
+                href={`/sets/${set.id}?page=1&pageSize=20`}
               >
                 <SetCard
                   key={`set-${set.id}`}

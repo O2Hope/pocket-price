@@ -1,16 +1,11 @@
-import { useState, useEffect } from "react";
-
-// Debounce hook
-export function useDebounce(value: string, delay: number) {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => clearTimeout(timer); // Cleanup timeout on value change
-  }, [value, delay]);
-
-  return debouncedValue;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function debounce<T extends (...args: any[]) => void>(
+  fn: T,
+  delay: number,
+) {
+  let timeout: NodeJS.Timeout;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
 }

@@ -4,6 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/navigation";
 import NextTopLoader from "nextjs-toploader";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -11,7 +12,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Pocket price?",
+  title: "Pocket price",
   description: "Pokemon TCG card prices search engine",
 };
 
@@ -23,11 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${dmSans.variable} antialiased bg-bg`}>
-        <Navigation />
-        <NextTopLoader color="var(--main)" initialPosition={0.1} />
-        <main className="w-full mx-auto px-4 max-w-4xl pt-28 min-h-[100dvh] flex flex-col ">
-          {children}
-        </main>
+        <NuqsAdapter>
+          <Navigation />
+          <NextTopLoader color="var(--main)" initialPosition={0.1} />
+          <main className="w-full mx-auto px-4 max-w-4xl pt-28 min-h-[100dvh] flex flex-col ">
+            {children}
+          </main>
+        </NuqsAdapter>
         <SpeedInsights />
       </body>
     </html>
