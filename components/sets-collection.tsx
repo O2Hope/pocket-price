@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import SetCard from "@/components/ui/set-card";
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -49,21 +50,38 @@ export const SetsCollection = ({ series }: { series: Series }) => {
       {Object.keys(localSeries).map((serie: string) => (
         <div className="mb-4" key={`serie-${serie}`}>
           <div className="text-2xl font-heading text-text">{serie}</div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 my-2">
-            {localSeries[serie].map((set: Set) => (
-              <Link
-                className="contents"
-                key={`set-${set.id}`}
-                href={`/sets/${set.id}?page=1&pageSize=20`}
-              >
-                <SetCard
-                  key={`set-${set.id}`}
-                  imageUrl={set.images.logo}
-                  caption={set.name}
-                />
-              </Link>
-            ))}
-          </div>
+          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 my-2">
+            <AnimatePresence custom="exit">
+              {localSeries[serie].map((set) => (
+                <motion.li
+                  key={`${set.id}`}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={{
+                    hidden: { opacity: 0, y: -10 },
+                    visible: () => ({
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        duration: 0.4,
+                        ease: "easeOut",
+                      },
+                    }),
+                    exit: {
+                      opacity: 0,
+                      y: -10,
+                      transition: { duration: 0.1 },
+                    },
+                  }}
+                >
+                  <Link href={`/sets/${set.id}?page=1&pageSize=20`}>
+                    <SetCard imageUrl={set.images.logo} caption={set.name} />
+                  </Link>
+                </motion.li>
+              ))}
+            </AnimatePresence>
+          </ul>
         </div>
       ))}
     </div>

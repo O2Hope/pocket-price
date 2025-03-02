@@ -24,6 +24,7 @@ export default async function Set({ searchParams, params }: PageProps) {
   const { slug } = await params;
   const { name, page, pageSize, order } = await loadSearchParams(searchParams);
   const set = await getSet(slug);
+
   const { data: cards, totalCount } = await getCardsBySet({
     id: slug,
     name,
@@ -68,7 +69,15 @@ export default async function Set({ searchParams, params }: PageProps) {
   return (
     <div className="pb-8">
       <div className="flex gap-4 text-text">
-        <Image src={set.images.logo} alt={set.name} width={200} height={200} />
+        <div className="relative max-w-[200px] flex items-center">
+          <Image
+            src={set.images.logo}
+            alt={set.name}
+            width={200}
+            height={100}
+            className="w-full max-h-[100px]"
+          />
+        </div>
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-1">
             <h1 className="text-3xl font-heading">{set.name}</h1>

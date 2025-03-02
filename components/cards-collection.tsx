@@ -79,7 +79,7 @@ export const CardsCollection = ({ cards }: CardsCollectionProps) => {
                 Price: Low to High
               </SelectItem>
               <SelectItem value="-tcgplayer.prices.holofoil.market">
-                Price: High to Lo
+                Price: High to Low
               </SelectItem>
               <SelectItem value="name">Name: A to Z</SelectItem>
               <SelectItem value="-name">Name: Z to A</SelectItem>
@@ -122,8 +122,8 @@ export const CardsCollection = ({ cards }: CardsCollectionProps) => {
                   caption={card.name}
                   number={card.number}
                   price={
-                    card.tcgplayer.prices?.holofoil?.market ||
-                    card.tcgplayer.prices?.reverseHolofoil?.market
+                    card.tcgplayer?.prices?.holofoil?.market ||
+                    card.tcgplayer?.prices?.reverseHolofoil?.market
                   }
                 />
               </Link>

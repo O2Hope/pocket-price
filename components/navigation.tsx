@@ -34,8 +34,13 @@ export const Navigation = () => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="neutral" size="icon">
-                  <Github />
+                <Button asChild variant="neutral" size="icon">
+                  <Link
+                    href="https://github.com/O2Hope/pocket-price"
+                    target="_blank"
+                  >
+                    <Github />
+                  </Link>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Star on Github</TooltipContent>
@@ -44,8 +49,13 @@ export const Navigation = () => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="neutral" size="icon">
-                  <Coffee />
+                <Button asChild variant="neutral" size="icon">
+                  <Link
+                    href="https://buymeacoffee.com/agusvaldesd"
+                    target="_blank"
+                  >
+                    <Coffee />
+                  </Link>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Buy me a coffee</TooltipContent>

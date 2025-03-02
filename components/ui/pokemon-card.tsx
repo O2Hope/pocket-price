@@ -21,7 +21,7 @@ export default function PokemonCard({
   number,
 }: Props) {
   return (
-    <figure className="flex flex-col hover:cursor-pointer hover:scale-105 transition-all overflow-hidden rounded-base border-2 border-border bg-main font-base shadow-shadow">
+    <figure className="flex flex-col hover:cursor-pointer hover:scale-105 transition-all  rounded-base border-2 border-border bg-main font-base shadow-shadow">
       <div className="relative w-full">
         <Image
           src={imageUrl}
@@ -44,7 +44,7 @@ export default function PokemonCard({
         </TooltipProvider>
         <div className="flex justify-between items-end gap-2 mt-1">
           <div className="text-muted">#{number}</div>
-          <Badge variant="neutral">${price}</Badge>
+          <Badge variant="neutral">{price ? `$${price}` : "N/A"}</Badge>
         </div>
       </figcaption>
     </figure>
